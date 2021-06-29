@@ -30,16 +30,6 @@ class ProfileController extends Controller
         return redirect('admin/profile/create');
     }
 
-    public function edit()
-    {
-        return view('admin.profile.edit');
-    }
-
-    public function update()
-    {
-        return redirect('admin/profile/edit');
-    }
-
     public function index(Request $request)
     {
         $cond_name = $request->cond_name;
@@ -49,5 +39,35 @@ class ProfileController extends Controller
             $posts = Profile::all();
         }
         return view('admin.profile.index', ['posts' => $posts, 'cond_name' => $cond_name]);
+    }
+
+    public function edit(Request $request)
+    {
+        $profile = Profile::find($request->id);
+        if (empty($profile)) {
+            abort(404);
+        }
+        return view('admin.profile.edit', ['profile_form' => $profile]);
+    }
+
+    public function update(Request $request)
+    {
+        $this->validate($request, Profile::$rules);
+
+        $profile = Profile::find($request->id);
+        $profile_form = $request->all();
+        unset($profile_form['_token']);
+
+        $profile->fill($profile_form)->save();
+
+        return redirect('admin/profile');
+    }
+
+    public function delete(Request $request)
+    {
+        $news = Profile::find($request->id);
+
+        $news->delete();
+        return redirect('admin/profile/');
     }
 }

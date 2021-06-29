@@ -20,7 +20,7 @@
 
                     {{-- 氏名 --}}
                     <div class="form-group row">
-                        <label class="col-md-2" for="name">氏名</label>
+                        <label class="col-md-2" for="name">名前</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" name="name" value="{{ old('name') }}">
                         </div>
@@ -32,7 +32,6 @@
                         <div class="col-md-2">
                             <input type="radio" name="gender" value="男性" {{ old('gender') == '男性' ? 'checked' : '' }}>男性 <br>
                             <input type="radio" name="gender" value="女性" {{ old('gender') == '女性' ? 'checked' : '' }}>女性
-
                         </div>
                     </div>
 

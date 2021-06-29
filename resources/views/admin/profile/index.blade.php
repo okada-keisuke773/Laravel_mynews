@@ -33,21 +33,30 @@
                     <table class="table table-dark">
                         <thead>
                             <tr>
-                                <th width="10%">ID</th>
-                                <th width="20%">名前</th>
+                                <th width="5%">ID</th>
+                                <th width="10%">名前</th>
                                 <th width="10%">性別</th>
-                                <th width="10%">趣味</th>
-                                <th width="50%">自己紹介</th>
+                                <th width="25%">趣味</th>
+                                <th width="40%">自己紹介</th>
+                                <th width="10%">操作</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($posts as $profile)
                                 <tr>
-                                    <th>{{ $profile->id }}</th>
+                                    <td>{{ $profile->id }}</td>
                                     <td>{{ $profile->name }}</td>
                                     <td>{{ $profile->gender }}</td>
                                     <td>{{ $profile->hobby }}</td>
                                     <td>{{ Str::limit($profile->introduction, 250) }}</td>
+                                    <td>
+                                        <div>
+                                            <a href="{{ action('Admin\ProfileController@edit', ['id' => $profile->id]) }}">編集</a>
+                                        </div>
+                                        <div>
+                                            <a href="{{ action('Admin\ProfileController@delete', ['id' => $profile->id]) }}">削除</a>
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>    
