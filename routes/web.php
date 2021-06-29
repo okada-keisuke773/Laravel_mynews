@@ -1,5 +1,3 @@
-1.12 KB
-  
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -23,6 +21,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::group(['prefix' => 'news'], function () {
         Route::get('create', 'Admin\NewsController@add');
         Route::post('create', 'Admin\NewsController@create');
+        Route::get('/', 'Admin\NewsController@index');
     });
     
     Route::group(['prefix' => 'profile'], function () {
@@ -30,6 +29,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         Route::post('create', 'Admin\ProfileController@create');
         Route::get('edit', 'Admin\ProfileController@edit');
         Route::post('edit', 'Admin\ProfileController@update');
+        Route::get('/', 'Admin\ProfileController@index');
     });
 });
 Auth::routes();
