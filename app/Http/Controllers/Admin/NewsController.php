@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 
 
 use App\News;
+use App\History;
+use Carbon\Carbon;
 
 class NewsController extends Controller
 {
@@ -36,8 +38,7 @@ class NewsController extends Controller
         $news->fill($form);
         $news->save();
 
-        // admin/news/createにリダイレクトする
-        return redirect('admin/news/create');
+        return redirect('admin/news');
     }
 
     public function index(Request $request)
@@ -63,21 +64,26 @@ class NewsController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, News::$rules);
-        
         $news = News::find($request->id);
-        
         $news_form = $request->all();
-        if (isset($news_form['image'])) {
+        if ($request->input('remove')) {
+            $news_form['image_path'] = null;
+        } elseif ($request->file('image')) {
             $path = $request->file('image')->store('public/image');
             $news->image_path = basename($path);
-            unset($news_form['image']);
-        } elseif (0 == strcmp($request->remove,'true')) {
-            $news->image_path = null;
-        }
-        unset($news_form['_token']);
-        unset($news_form['remove']);
+        } else {
+            $news_form['image_path'] = $news->image_path;
+        } 
 
+        unset($news_form['_token']);
+        unset($news_form['image']);
+        unset($news_form['remove']);
         $news->fill($news_form)->save();
+
+        $history = new History;
+        $history->news_id = $news->id;
+        $history->edited_at = Carbon::now();
+        $history->save();
 
         return redirect('admin/news');
     }
